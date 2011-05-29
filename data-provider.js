@@ -51,8 +51,8 @@ DataProvider.prototype.closeByid=function(user,taskId,callback) {
         if(error) callback(error);
         else {
             
-           task_collection.update({user:user,'todo.id':taskId}, {'$set':{'todo.$.done':1}}, function(err, result) {
-                
+           task_collection.update({user:user,'todo.id':taskId}, {"$set":{"todo.$.done":1}},{safe:true},function(err, result){
+                sys.puts("USER:"+user+" id:"+taskId+" ERROR:"+err+ " RESULT:"+result);
                 if( error ) callback(error,result);
                 else callback(null,result)
                    
