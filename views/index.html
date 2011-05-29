@@ -1,0 +1,15 @@
+<h1>Tatoo List</h1>
+<ul>
+	{{each list}}
+
+		
+	    <li>${$value.desc}
+		{{if $value.done == 0}}
+			<a href="/done/${$value.id}">[Do it now]</a>
+		{{else $value.done==1}}
+			[done]
+		{{/if}}
+		</li>
+		
+	{{/each}}
+</ul>
