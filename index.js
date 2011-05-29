@@ -26,7 +26,7 @@ app.get('/', function(req, res){
 });
 
 app.get('/done/:id',function(req,res){
-   taskProvider.closeByid("saturngod",req.params.id,function(error){
+   taskProvider.closeByid("saturngod",req.params.id,function(error,result){
       res.redirect('/');
    });
 });

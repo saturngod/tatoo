@@ -50,11 +50,12 @@ DataProvider.prototype.closeByid=function(user,taskId,callback) {
     this.getCollection(function(error,task_collection){
         if(error) callback(error);
         else {
-            //db.tasks.update({'todo.id':1},{"$set":{"todo.$.done":1}});
-           task_collection.update({user:user,'todo.id':taskId},{"$set":{"todo.$.done":1}}, {safe:true},function(error) {
-               sys.puts("callback user:"+user+"id:"+taskId+"error:"+error);
-               if( error ) callback(error);
-               else callback(null)
+            
+           task_collection.update({user:user,'todo.id':taskId}, {'$set':{'todo.$.done':1}}, function(err, result) {
+                
+                if( error ) callback(error,result);
+                else callback(null,result)
+                   
            });
         }
     });
