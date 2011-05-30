@@ -46,13 +46,13 @@ DataProvider.prototype.findByUser=function(user,callback){
     });
 };
 
-DataProvider.prototype.closeByid=function(user,taskId,callback) {
+DataProvider.prototype.closeByid=function(username,taskId,callback) {
     this.getCollection(function(error,task_collection){
         if(error) callback(error);
         else {
             
-           task_collection.update({user:user,'todo.id':taskId}, {"$set":{"todo.$.done":1}},{safe:true},function(err, result){
-                sys.puts("USER:"+user+" id:"+taskId+" ERROR:"+err+ " RESULT:"+result);
+           task_collection.update({user:username,'todo.id':taskId}, {"$set":{"todo.$.done":1}},{safe:true},function(error, result){
+                sys.puts("callback user:"+username+"id:"+taskId+"error:"+error);
                 if( error ) callback(error,result);
                 else callback(null,result)
                    
