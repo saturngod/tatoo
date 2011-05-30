@@ -51,12 +51,13 @@ DataProvider.prototype.closeByid=function(username,taskId,callback) {
         if(error) callback(error);
         else {
             
-           task_collection.update({user:username,'todo.id':taskId}, {"$set":{"todo.$.done":1}},{safe:true},function(error, result){
-                sys.puts("callback user:"+username+"id:"+taskId+"error:"+error);
-                if( error ) callback(error,result);
-                else callback(null,result)
-                   
-           });
+           task_collection.update({user:username,'todo.id':Math.floor(taskId)}, {"$set":{"todo.$.done":1}},{safe:true},function(error, result){
+                                      sys.puts("callback user:"+username+"id:"+taskId+"error:"+error);
+                                      if( error ) callback(error,result);
+                                      else callback(null,result)
+                                         
+                                 });
+           
         }
     });
 }
