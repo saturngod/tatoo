@@ -31,4 +31,10 @@ app.get('/done/:id',function(req,res){
    });
 });
 
+app.get('/del/:id',function(req,res){
+   taskProvider.remove("saturngod",req.params.id,function(error,result){
+      res.redirect('/');
+   });
+});
+
 app.listen(3000);

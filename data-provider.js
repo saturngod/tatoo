@@ -52,7 +52,6 @@ DataProvider.prototype.closeByid=function(username,taskId,callback) {
         else {
             
            task_collection.update({user:username,'todo.id':Math.floor(taskId)}, {"$set":{"todo.$.done":1}},{safe:true},function(error, result){
-                                      sys.puts("callback user:"+username+"id:"+taskId+"error:"+error);
                                       if( error ) callback(error,result);
                                       else callback(null,result)
                                          
@@ -60,6 +59,21 @@ DataProvider.prototype.closeByid=function(username,taskId,callback) {
            
         }
     });
+}
+
+DataProvider.prototype.remove=function(username,taskId,callback){
+   this.getCollection(function(error,task_collection){
+       task_collection.update({user:username,'todo.id':Math.floor(taskId)},{"$unset":{"todo.$":1}},{safe:true},function(error,result){
+           if( error ) callback(error,result);
+           else {
+               //clear remove object
+                task_collection.update({user:username},{"$pull":{todo:null}},{safe:true},function(error,result){
+                    if( error ) callback(error)
+                    else callback(null, result);  
+                });
+           }
+       });
+   }); 
 }
 
 exports.DataProvider= DataProvider;
