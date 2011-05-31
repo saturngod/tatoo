@@ -14,9 +14,12 @@ app.register(".html", require("jqtpl").express);
 app.set('views', __dirname + '/views');
 app.set("view options", { layout: true });
 
-app.use("/styles", express.static(__dirname + '/styles'));
-app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
- 
+app.configure(function(){
+    app.use("/styles", express.static(__dirname + '/styles'));
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    app.use(express.bodyParser());
+});
+
 app.get('/', function(req, res){
     
     taskProvider.findByUser("saturngod",function(error, tasks){
@@ -35,6 +38,13 @@ app.get('/del/:id',function(req,res){
    taskProvider.remove("saturngod",req.params.id,function(error,result){
       res.redirect('/');
    });
+});
+
+app.post('/add',function(req,res){
+   taskProvider.add("saturngod",req.param("task"),function(error,result){
+        res.redirect('/');
+     });
+
 });
 
 app.listen(3000);

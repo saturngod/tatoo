@@ -63,6 +63,7 @@ DataProvider.prototype.closeByid=function(username,taskId,callback) {
 
 DataProvider.prototype.remove=function(username,taskId,callback){
    this.getCollection(function(error,task_collection){
+       //set null
        task_collection.update({user:username,'todo.id':Math.floor(taskId)},{"$unset":{"todo.$":1}},{safe:true},function(error,result){
            if( error ) callback(error,result);
            else {
@@ -74,6 +75,22 @@ DataProvider.prototype.remove=function(username,taskId,callback){
            }
        });
    }); 
+}
+
+DataProvider.prototype.add=function(username,taskname,callback) {
+    this.getCollection(function(error,task_collection){
+        //try to get latest id
+        task_collection.findOne({user:username},function(error,result){
+            if( error ) callback(error,result);
+            else {
+                //increase id, add id by latest id
+                task_collection.update({user:username},{"$push":{todo:{id:Math.floor(result.lastid)+1,desc:taskname,done:0}},"$inc":{lastid:1}},{safe:true},function(error,result){
+                    if( error ) callback(error)
+                    else callback(null, result);
+                });
+            }
+        });
+    });
 }
 
 exports.DataProvider= DataProvider;
