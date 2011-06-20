@@ -5,7 +5,7 @@
 		
 	    <li>${$value.desc}
 		{{if $value.done == 0}}
-			<a href="/done/${$value.id}">[Do it now]</a>
+			<a href="/done/${$value.id}">Done</a>
 		{{else $value.done==1}}
 			[done]
 		{{/if}}
@@ -14,9 +14,10 @@
 		</li>
 		
 	{{/each}}
-	
+	<li>
 	<form action="/add" method="post">
 		<input type="text" name="task" placeholder="New Tasks">
 		<input type="submit" value="add">
 	</form>
+	</li>
 </ul>

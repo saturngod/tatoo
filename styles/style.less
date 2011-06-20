@@ -1,0 +1,39 @@
+@color: #4D926F;
+@link-color:#3399FF;
+@hoverColor:#B6E0FF;
+
+.liboder(@border:1px) {
+    border-top:@border solid #CCC;
+    border-bottom:@border solid #EEE;
+    padding:10px 5px;
+}
+
+body {
+    font-family:Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+}
+h1 {
+    color:@color;
+}
+
+a , a:link, a:visited {
+    text-decoration:none;
+    color:@link-color;
+}
+
+a:hover {
+    text-decoration:underline;
+}
+
+ul ,li {
+    list-style:none;
+    margin:0px;
+    padding:0px;
+}
+
+li {
+    .liboder;
+}
+
+li:hover {
+    background:@hoverColor;
+}
