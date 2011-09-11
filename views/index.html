@@ -1,23 +1,74 @@
 <h1>Tatoo List</h1>
 <ul>
+	<div id="todolist">
 	{{each list}}
 
 		
-	    <li>${$value.desc}
+	    <li id="todo-${$value.id}">${$value.desc}
 		{{if $value.done == 0}}
-			<a href="/done/${$value.id}">Done</a>
+			<span id="done-${$value.id}"><a href="/done/${$value.id}" rel="${$value.id}" class='done'>Done</a></span>
 		{{else $value.done==1}}
 			[done]
 		{{/if}}
 		
-		<a href="/del/${$value.id}">Del</a>
+		<a href="/del/${$value.id}" rel="${$value.id}" class='del'>Del</a>
 		</li>
 		
 	{{/each}}
+	</div>
+
 	<li>
-	<form action="/add" method="post">
-		<input type="text" name="task" placeholder="New Tasks">
-		<input type="submit" value="add">
+	<form action="#" method="post">
+		<input type="text" id="task" name="task" placeholder="New Tasks">
+		<input type="submit" value="add" id="add">
 	</form>
 	</li>
 </ul>
+
+<script>
+	var socket = io.connect('http://localhost:3000');
+          
+	socket.on('connect', function () {
+	  console.log("Connecting...");
+	});
+
+	socket.on('addnewticket', function (data,id) {
+		console.log("got addnew");
+		append_txt="<li>"+data;
+		append_txt+=" <span id='done-"+id+"'><a href='/done/"+id+"' rel='"+id+"' class='done'>Done</a></span>";
+		append_txt+=" <a href='/del/"+id+"' rel='"+id+"' class='del'>Del</a>";
+		append_txt+="</li>";
+	 	$("#todolist").append(append_txt);
+	 	$("#task").val("");
+	});
+
+	socket.on('delticket',function(id){
+		console.log('del '+id);
+		$("#todo-"+id).remove();
+	});
+
+	socket.on('doneticket',function(id){
+		console.log('update '+id);
+		$("#done-"+id).html("[done]");
+	});
+
+	$(document).ready(function(){
+		$("#add").click(function(){
+		   socket.emit('addnewticket', $('#task').val()); 
+		   return false;
+		});
+
+		$(".del").live("click",function(){
+			id=$(this).attr("rel");
+			socket.emit("delticket",id);
+			return false;
+		});
+
+		$(".done").live("click",function(){
+			id=$(this).attr("rel");
+			socket.emit("doneticket",id);
+			return false;
+		});
+	});
+          
+</script>

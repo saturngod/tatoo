@@ -84,9 +84,9 @@ DataProvider.prototype.add=function(username,taskname,callback) {
             if( error ) callback(error,result);
             else {
                 //increase id, add id by latest id
-                task_collection.update({user:username},{"$push":{todo:{id:Math.floor(result.lastid)+1,desc:taskname,done:0}},"$inc":{lastid:1}},{safe:true},function(error,result){
+                task_collection.update({user:username},{"$push":{todo:{id:Math.floor(result.lastid)+1,desc:taskname,done:0}},"$inc":{lastid:1}},{safe:true},function(error,result_update){
                     if( error ) callback(error)
-                    else callback(null, result);
+                    else callback(null, result_update,Math.floor(result.lastid)+1);
                 });
             }
         });
