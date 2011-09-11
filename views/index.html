@@ -34,7 +34,7 @@
 
 	socket.on('addnewticket', function (data,id) {
 		console.log("got addnew");
-		append_txt="<li>"+data;
+		append_txt="<li id='todo-"+id+"'>"+data;
 		append_txt+=" <span id='done-"+id+"'><a href='/done/"+id+"' rel='"+id+"' class='done'>Done</a></span>";
 		append_txt+=" <a href='/del/"+id+"' rel='"+id+"' class='del'>Del</a>";
 		append_txt+="</li>";
