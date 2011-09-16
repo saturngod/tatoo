@@ -29,7 +29,22 @@ app.configure(function(){
 app.get('/', function(req, res){
     
     taskProvider.findByUser("saturngod",function(error, tasks){
-        res.render('index.html',{title:"Tatoo List",list:tasks.todo});
+        
+
+        if(error==null) {
+          res.render('index.html',{title:"Tatoo List",list:tasks.todo});
+        }
+        else if(error=="no user") {
+          taskProvider.createUser("saturngod",function(error,docs){
+            
+            taskProvider.findByUser("saturngod",function(error, user_tasks){
+              if(error==null) {
+                res.render('index.html',{title:"Tatoo List",list:user_tasks.todo});
+              }
+            });
+
+          });
+        }
     });
     
 });

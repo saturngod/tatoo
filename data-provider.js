@@ -38,12 +38,35 @@ DataProvider.prototype.findByUser=function(user,callback){
     this.getCollection(function(error,task_collection){
         if(error)   callback(error);
         else {
-            task_collection.findOne({user:user},function(error,result){
-                if( error ) callback(error)
-                else callback(null, result)
+
+            task_collection.count(function(err, count) {
+              if(count > 0) {
+                task_collection.findOne({user:user},function(error,result){
+                  if( error ) callback(error)
+                  else {
+                    callback(null, result);
+                  }
+                });
+              }
+              else {
+                callback("no user",null);
+              }
             });
+
+            
         }
     });
+};
+
+DataProvider.prototype.createUser=function(username,callback){
+  this.getCollection(function(error,task_collection){
+    if(error) callback(error);
+    else {
+      task_collection.insert({"user" : username, "todo" : []},function(err,docs){
+        callback(err,docs);
+      });
+    }
+  });
 };
 
 DataProvider.prototype.closeByid=function(username,taskId,callback) {
